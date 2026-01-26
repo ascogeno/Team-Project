@@ -1,16 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
-  <component name="GradleMigrationSettings" migrationVersion="1" />
   <component name="GradleSettings">
     <option name="linkedExternalProjectsSettings">
       <GradleProjectSettings>
         <option name="testRunner" value="CHOOSE_PER_TEST" />
         <option name="externalProjectPath" value="$PROJECT_DIR$" />
-<<<<<<< HEAD:Calendar/.idea/gradle.xml
-        <option name="gradleJvm" value="jbrsdk_jcef-17" />
-=======
         <option name="gradleJvm" value="jbr-21" />
->>>>>>> 2dabc8d79333fda86123d80cea6a1ba8e9e13df7:.idea/gradle.xml
         <option name="modules">
           <set>
             <option value="$PROJECT_DIR$" />
@@ -18,14 +13,6 @@
           </set>
         </option>
       </GradleProjectSettings>
-<<<<<<< HEAD:Calendar/.idea/gradle.xml
-=======
-      <GradleProjectSettings>
-        <option name="testRunner" value="CHOOSE_PER_TEST" />
-        <option name="externalProjectPath" value="$PROJECT_DIR$/Calendar/gradle" />
-        <option name="gradleJvm" value="jbr-21" />
-      </GradleProjectSettings>
->>>>>>> 2dabc8d79333fda86123d80cea6a1ba8e9e13df7:.idea/gradle.xml
     </option>
   </component>
 </project>
