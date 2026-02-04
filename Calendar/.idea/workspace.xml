@@ -68,6 +68,26 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
+<<<<<<< HEAD
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "Android App.Calendar.app.executor": "Run",
+    "ModuleVcsDetector.initialDetectionPerformed": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.cidr.known.project.marker": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "RunOnceActivity.readMode.enableVisualFormatting": "true",
+    "android.gradle.sync.needed": "true",
+    "cf.first.check.clang-format": "false",
+    "cidr.known.project.marker": "true",
+    "git-widget-placeholder": "master",
+    "ignore.virus.scanning.warn.message": "true",
+    "kotlin-language-version-configured": "true",
+    "last_opened_file_path": "C:/Code/Team Project/Calendar"
+  }
+}]]></component>
+  <component name="RunManager">
+=======
   <component name="PropertiesComponent">{
   &quot;keyToString&quot;: {
     &quot;Android App.Calendar.app.executor&quot;: &quot;Run&quot;,
@@ -87,6 +107,7 @@
   }
 }</component>
   <component name="RunManager" selected="Android App.Calendar.app">
+>>>>>>> 60e760d4abbf31b7b6a1de0ae14bf6260d45686b
     <configuration name="Calendar.app" type="AndroidRunConfigurationType" factoryName="Android App" activateToolWindowBeforeRun="false">
       <module name="Calendar.app" />
       <option name="ANDROID_RUN_CONFIGURATION_SCHEMA_VERSION" value="1" />
