@@ -24,6 +24,9 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.calendar.ui.theme.CalendarTheme
+import androidx.compose.ui.platform.LocalContext
+import com.example.calendar.data.CalendarEvent
+import com.example.calendar.data.EventRepository
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -114,6 +117,47 @@ fun GoalsScreen() {
                         color = Color(0xFF13637C),
                         shape = RoundedCornerShape(20.dp)
                     )
+            )
+
+            val context = LocalContext.current
+            val repo = remember { EventRepository(context) }
+
+            Button(
+                onClick = {
+                    repo.add(
+                        CalendarEvent(
+                            name = "Lunch",
+                            notes = "Eating with Patricia",
+                            sDate = "2026-02-25",
+                            sTime = "10:45",
+                            eDate = "2026-02-25",
+                            eTime = "11:45",
+                            color = "#0000ff",
+                            recycled = false
+                        )
+                    )
+                    repo.syncSave()
+                },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(top = 16.dp)
+            ) {
+                Text("Test Save")
+            }
+
+            Button(
+                onClick = { repo.reloadFromDisk() },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(top = 12.dp)
+            ) {
+                Text("Test Load")
+            }
+
+            Text(
+                text = "Loaded events: ${repo.events.size}",
+                modifier = Modifier.padding(top = 12.dp),
+                fontSize = 16.sp
             )
 
             // Spacer to keep it off the very bottom of the screen
