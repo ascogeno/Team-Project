@@ -93,7 +93,7 @@ fun MainNavigationContainer() {
             }
 
             composable(Screen.Tasks.route) {
-//                TasksScreen()
+                TaskScreen()
             }
 
             composable(Screen.Goals.route) {
