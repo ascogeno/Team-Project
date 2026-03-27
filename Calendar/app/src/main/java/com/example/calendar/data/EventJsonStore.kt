@@ -1,6 +1,8 @@
 package com.example.calendar.data
 
 import android.content.Context
+import androidx.compose.ui.graphics.Color
+import com.example.calendar.CalendarTask
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
@@ -19,18 +21,42 @@ class EventJsonStore(
 
     private val file: File get() = File(context.filesDir, fileName)
 
-    fun load(): List<CalendarEvent> {
+    fun loadTasks(): List<CalendarTask> {
         if (!file.exists()) return emptyList()
 
         return runCatching {
-            json.decodeFromString<EventFile>(file.readText()).events
+            val parsed = json.decodeFromString<TaskFile>(file.readText())
+            parsed.tasks.map { saved ->
+                CalendarTask(
+                    id = saved.id,
+                    title = saved.title,
+                    notes = saved.notes,
+                    startMinute = saved.startMinute,
+                    endMinute = saved.endMinute,
+                    color = Color(saved.color),
+                    day = saved.day
+                )
+            }
         }.getOrElse {
             emptyList()
         }
     }
 
-    fun save(events: List<CalendarEvent>) {
-        val payload = EventFile(version = 1, events = events)
+    fun saveTasks(tasks: List<CalendarTask>) {
+        val payload = TaskFile(
+            version = 1,
+            tasks = tasks.map { task ->
+                SavedCalendarTask(
+                    id = task.id,
+                    title = task.title,
+                    notes = task.notes,
+                    startMinute = task.startMinute,
+                    endMinute = task.endMinute,
+                    color = task.color.value.toLong(),
+                    day = task.day
+                )
+            }
+        )
 
         val tmp = File(context.filesDir, "$fileName.tmp")
         tmp.writeText(json.encodeToString(payload))

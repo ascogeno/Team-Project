@@ -28,6 +28,8 @@ import java.util.Calendar
 import java.util.Locale
 import java.text.SimpleDateFormat
 import kotlinx.coroutines.delay
+import androidx.compose.ui.platform.LocalContext
+import com.example.calendar.data.EventRepository
 
 /**
  * Data Model for a Calendar Event.
@@ -46,6 +48,8 @@ data class CalendarTask(
 @Composable
 fun CalendarScreen() {
     // --- Calendar Initialization ---
+    val context = LocalContext.current
+    val repo = remember { EventRepository(context) }
     val calendar = remember { Calendar.getInstance() }
     val todayDay = remember { calendar.get(Calendar.DAY_OF_MONTH) }
     val daysInMonth = remember { calendar.getActualMaximum(Calendar.DAY_OF_MONTH) }
@@ -60,6 +64,11 @@ fun CalendarScreen() {
     // An observable list of tasks. Using mutableStateListOf allows Compose to
     // automatically recompose when items are added, removed, or updated.
     val tasks = remember { mutableStateListOf<CalendarTask>() }
+
+    LaunchedEffect(Unit) {
+        tasks.clear()
+        tasks.addAll(repo.loadTasks())
+    }
 
     // Tracks current time to position the "Red Line" indicator
     var currentMinutesOfDay by remember {
@@ -226,6 +235,9 @@ fun CalendarScreen() {
                                                 startMinute = snappedStart,
                                                 endMinute = snappedStart + duration
                                             )
+
+                                            //  SAVE RIGHT AFTER UPDATE
+                                            repo.saveTasks(tasks)
                                         }
                                         // Reset drag state
                                         draggingTaskId = null
@@ -253,22 +265,26 @@ fun CalendarScreen() {
         if (showDialog || editingTask != null) {
             AddTaskDialog(
                 initialHour = clickedHour,
+                selectedDay = selectedDay,
                 existingTask = editingTask,
                 onDismiss = { showDialog = false; editingTask = null },
                 onTaskAdded = { newTask ->
                     if (editingTask != null) {
-                        // Edit Mode: Replace item in the list
                         val index = tasks.indexOfFirst { it.id == editingTask!!.id }
                         if (index != -1) tasks[index] = newTask
                     } else {
-                        // Add Mode: Insert new item
                         tasks.add(newTask.copy(day = selectedDay))
                     }
+
+                    repo.saveTasks(tasks)
+
                     showDialog = false
                     editingTask = null
                 },
                 onDeleteTask = { taskToDelete ->
                     tasks.removeIf { it.id == taskToDelete.id }
+                    repo.saveTasks(tasks)
+
                     showDialog = false
                     editingTask = null
                 }
@@ -338,6 +354,7 @@ fun EventCard(task: CalendarTask, modifier: Modifier, onClick: () -> Unit) {
 @Composable
 fun AddTaskDialog(
     initialHour: Int,
+    selectedDay: Int,
     existingTask: CalendarTask? = null,
     onDismiss: () -> Unit,
     onTaskAdded: (CalendarTask) -> Unit,
@@ -416,7 +433,7 @@ fun AddTaskDialog(
                         startMinute = startMin,
                         endMinute = endMin,
                         color = selectedColor,
-                        day = existingTask?.day ?: 0
+                        day = existingTask?.day ?: selectedDay
                     ))
                 },
                 // Prevents creating tasks with zero/negative duration or no title
